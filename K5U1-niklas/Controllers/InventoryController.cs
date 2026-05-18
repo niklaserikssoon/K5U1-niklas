@@ -12,7 +12,7 @@ namespace K5U1_niklas.Controllers
     {
         private readonly InventoryDbContext _context;
         private readonly IConfiguration _configuration;
-
+        // Konstruktor som tar in både DbContext och IConfiguration för att kunna hämta hemligheter
         public InventoryController(InventoryDbContext context, IConfiguration configuration)
         {
             _context = context;
