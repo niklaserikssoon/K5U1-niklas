@@ -19,6 +19,7 @@ namespace K5U1_niklas.Controllers
             _configuration = configuration;
         }
 
+        // Denna endpoint används för att hämta alla produkter i lagret
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
         {
