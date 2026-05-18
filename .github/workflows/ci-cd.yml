@@ -18,13 +18,13 @@ jobs:
         dotnet-version: "9.0.x"
 
     - name: Restore
-      run: dotnet restore
+      run: dotnet restore CloudNativeInventory.sln
 
     - name: Build
-      run: dotnet build --configuration Release --no-restore
+      run: dotnet build CloudNativeInventory.sln --configuration Release --no-restore
 
     - name: Test
-      run: dotnet test --configuration Release --no-build
+      run: dotnet test CloudNativeInventory.sln --configuration Release --no-build
 
     - name: Login to ACR
       uses: azure/docker-login@v2
