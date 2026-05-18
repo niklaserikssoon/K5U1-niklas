@@ -1,6 +1,0 @@
-@K5U1_niklas_HostAddress = http://localhost:5237
-
-GET {{K5U1_niklas_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
