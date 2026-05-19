@@ -1,8 +1,6 @@
 # CloudNative Inventory API
 
-## 1. Lösningsbeskrivning
-
-Ett REST API byggt med ASP.NET Core 9 som hanterar ett produktlager (inventory). API:t exponerar endpoints för att lista produkter och verifiera att hemligheter laddas säkert via Azure Key Vault.
+Detta projekt är ett REST API byggt med ASP.NET core som ska hantera ett produktlager eller inventory, och använder Azure key vault för att säkerställa hemligheter.
 
 ### Azure-tjänster som används
 
@@ -56,35 +54,23 @@ API:t är tillgängligt på `http://localhost:8080`.
 
 ### Vad som triggar pipelinen
 
-Pipelinen triggas automatiskt vid varje push till `master`-branchen.
+Pipelinen triggas automatiskt vid varje push till `master` eller om den heter `main` -branchen.
 
 ### Steg i pipelinen
 
-```
-push → master
-       │
-       ▼
-┌─────────────────┐
-│  build-and-test │
-│  1. Checkout    │
-│  2. Setup .NET  │
-│  3. Restore     │
-│  4. Build       │
-│  5. Test        │
-└────────┬────────┘
-         │ (måste lyckas)
-         ▼
-┌─────────────────────────────┐
-│          deploy             │
-│  1. Checkout                │
-│  2. Login till ACR          │
-│  3. Bygg Docker-image       │
-│  4. Pusha image till ACR    │
-│  5. Login till Azure        │
-│  6. Deploy till Container   │
-│     Apps                    │
-└─────────────────────────────┘
-```
+När kod pushas till master triggas GitHub Actions-pipelinen automatiskt.
+
+Pipelinen består av två steg: build-and-test och deploy.
+
+I steget build-and-test checkas koden ut, .NET SDK installeras och projektets beroenden återställs. Därefter byggs applikationen och samtliga tester körs. Deploy-steget startar endast om detta steg lyckas.
+
+I steget deploy checkas koden ut igen och pipelinen loggar in mot Azure Container Registry (ACR). En Docker-image byggs och pushas därefter till ACR. Efter inloggning mot Azure deployas den nya imagen till Container Apps-miljön.
+
+Deploy och verifiering
+
+Deploy sker automatiskt via GitHub Actions när kod pushas till master. Ingen manuell hantering krävs.
+
+För att verifiera att API:t körs öppnas Application URL för Container Appen ca-inventory-api i Microsoft Azure Portal. Därefter kan relevanta endpoint-anrop användas för att kontrollera att deploymenten lyckats och att integrationer fungerar korrekt.
 
 Deploy-jobbet kör **endast** om build-and-test lyckas (`needs: build-and-test`).
 
