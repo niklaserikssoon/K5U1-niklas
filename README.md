@@ -1,8 +1,6 @@
 # CloudNative Inventory API
 
-## 1. Lösningsbeskrivning
-
-Ett REST API byggt med ASP.NET Core 9 som hanterar ett produktlager (inventory). API:t exponerar endpoints för att lista produkter och verifiera att hemligheter laddas säkert via Azure Key Vault.
+Detta projekt är ett REST API byggt med ASP.NET core som ska hantera ett produktlager eller inventory, och använder Azure key vault för att säkerställa hemligheter.
 
 ### Azure-tjänster som används
 
