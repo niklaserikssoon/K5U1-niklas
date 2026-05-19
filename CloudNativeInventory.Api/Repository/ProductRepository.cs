@@ -1,15 +1,13 @@
-﻿using CloudNativeInventory.Api.Data;
+using CloudNativeInventory.Api.Data;
 using CloudNativeInventory.Api.Models;
-using CloudNativeInventory.Api.Services;
 using Microsoft.EntityFrameworkCore;
-
 
 namespace CloudNativeInventory.Api.Repository
 {
     public class ProductRepository : IProductRepository
     {
         private readonly InventoryDbContext _context;
-        
+
         public ProductRepository(InventoryDbContext context)
         {
             _context = context;
@@ -22,24 +20,28 @@ namespace CloudNativeInventory.Api.Repository
             return product;
         }
 
-        public Task<bool> DeleteProductAsync(Guid id)
+        public async Task<bool> DeleteProductAsync(Product product)
         {
-            throw new NotImplementedException();
+            _context.Products.Remove(product);
+            await _context.SaveChangesAsync();
+            return true;
         }
 
-        public Task<IEnumerable<Product>> GetAllProductsAsync()
+        public async Task<IEnumerable<Product>> GetAllProductsAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Products.AsNoTracking().ToListAsync();
         }
 
-        public Task<Product> GetProductByIdAsync(Guid id)
+        public async Task<Product?> GetProductByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return await _context.Products.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public Task<Product> UpdateProductAsync(Product product)
+        public async Task<Product> UpdateProductAsync(Product product)
         {
-            throw new NotImplementedException();
+            _context.Products.Update(product);
+            await _context.SaveChangesAsync();
+            return product;
         }
     }
 }

@@ -36,24 +36,61 @@ namespace CloudNativeInventory.Api.Services
             };
         }
 
-        public Task<bool> DeleteProductAsync(Guid id)
+        public async Task<bool> DeleteProductAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var product = await _repository.GetProductByIdAsync(id);
+            if (product == null) return false;
+
+            return await _repository.DeleteProductAsync(product);
         }
 
-        public Task<IEnumerable<ProductDTO>> GetAllProductsAsync()
+        public async Task<IEnumerable<ProductDTO>> GetAllProductsAsync()
         {
-            throw new NotImplementedException();
+            var products = await _repository.GetAllProductsAsync();
+            return products.Select(p => new ProductDTO
+            {
+                Id = p.Id,
+                Name = p.Name,
+                Description = p.Description,
+                Price = p.Price,
+                StockQuantity = p.StockQuantity
+            });
         }
 
-        public Task<ProductDTO> GetProductByIdAsync(Guid id)
+        public async Task<ProductDTO?> GetProductByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var product = await _repository.GetProductByIdAsync(id);
+            if (product == null) return null;
+
+            return new ProductDTO
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Description = product.Description,
+                Price = product.Price,
+                StockQuantity = product.StockQuantity
+            };
         }
 
-        public Task<ProductDTO> UpdateProductAsync(Guid id, CreateProductDTO updateProductDTO)
+        public async Task<ProductDTO?> UpdateProductAsync(Guid id, CreateProductDTO updateProductDTO)
         {
-            throw new NotImplementedException();
+            var product = await _repository.GetProductByIdAsync(id);
+            if (product == null) return null;
+
+            product.Name = updateProductDTO.Name;
+            product.Description = updateProductDTO.Description;
+            product.Price = updateProductDTO.Price;
+            product.StockQuantity = updateProductDTO.Quantity;
+
+            await _repository.UpdateProductAsync(product);
+            return new ProductDTO
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Description = product.Description,
+                Price = product.Price,
+                StockQuantity = product.StockQuantity
+            };
         }
     }
 }
