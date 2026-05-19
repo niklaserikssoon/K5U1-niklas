@@ -32,7 +32,7 @@ namespace CloudNativeInventory.Api.Services
                 Name = created.Name,
                 Description = created.Description,
                 Price = created.Price,
-                stockQuantity = created.StockQuantity
+                StockQuantity = created.StockQuantity
             };
         }
 
